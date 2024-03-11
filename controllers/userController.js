@@ -47,6 +47,8 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     res.status(200).json({message: 'Update user profil successfully'});
 });
 
+
+
 export {
     authUser,
     registerUser,
@@ -54,3 +56,4 @@ export {
     getUserProfile,
     updateUserProfile,
 };
+

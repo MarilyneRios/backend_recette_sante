@@ -31,7 +31,7 @@ app.listen(port, () => console.log(`Server Started on port ${port}`));
 - **GET /api/users/profile**  obtenir un profile utilisateur
 - **PUT /api/users/profile** mise à jour d'un profil
 
-- GET /api/recipes : Lire toutes les recettes partiellement (pour la page d’accueil)
+- GET /api/recipes/allRecipes : Lire toutes les recettes partiellement (pour la page d’accueil)
 - GET /api/recipes/auth : Lire toutes les recettes partiellement quand l’utilisateur est authentifié
 - GET /api/recipes/:token  : Lire une recette complète quand l’utilisateur est authentifié
 - POST /api/recipes : Ajouter une recette quand l’utilisateur est authentifié
