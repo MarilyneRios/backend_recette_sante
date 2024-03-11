@@ -51,7 +51,15 @@
 
     node_modules
     .env
+////////////////////////////////////////////////////////////////////
+    ps: faites votre dépot github avec le .env sans infos sensible
+    Si le fichier .env apparait sur votre gitHub : 
 
+     git rm --cached .env
+     git commit -m "Remove .env from tracking"
+     git push origin main
+
+///////////////////////////////////////////////////////////////////
 12/ mkdir routes
 
 13/ touch userRoutes.js recipeRoutes.js
@@ -103,6 +111,74 @@ app.get('/', (req, res) => {
 
 app.listen(port, () => console.log(`Server Started on port ${port}`));
 
+
 18/ Tester avec thunder client les routes
+
 Post + http://localhost:3001/api/users/auth
 Get + http://localhost:3001/api/recipes# backend_recette_sante
+
+19/ Mongoose fonctionne avec des promesses, donc asynchrone :
+
+il y a plusieurs façon de faire, ici je veux utiliser async Handler:
+C'est une **bibliothèque** d’assistance pour gérer les exceptions dans les **fonctions asynchrones**
+    (les exceptions non gérées dans les routes asynchrones seront automatiquement transmises à votre middleware d’erreur)
+//////////////////////////////////////////
+npm install **express-async-handler**
+/////////////////////////////////////////
+
+20/ mkdir middleware
+
+21/ Créer un fichier : errorMiddleware.js
+
+    const notFound = (req, res, next) => {
+        const error = new Error(`Not Found - ${req.originalUrl}`);
+        res.status(404);
+        next(error);
+    };
+    
+   
+    const errorHandler = (err, req, res, next) => {
+        let statusCode = res.statusCode === 200 ? 500 : res.statusCode;
+        let message = err.message;
+    
+        if (err.name === "CastError" && err.kind === "ObjectId") {
+        statusCode = 404;
+        message = "Resource not found";
+        }
+    
+        res.status(statusCode).json({
+        message: message,
+        stack: process.env.NODE_ENV === "production" ? null : err.stack,
+        });
+    };
+    
+    export { notFound, errorHandler };
+////////////////////////////////////////////////////////////////////////
+**Ajout** dans **server.js**:
+import { notFound, errorHandler } from './middleware/errorMiddleware.js';
+ 
+(juste avant app.listen ) 
+app.use(notFound);
+app.use(errorHandler);
+    
+22/ mkdir config
+
+23/ Créer un fichier : db.js
+
+        import mongoose from 'mongoose';
+
+        const connectDB = async () => {
+        try {
+            const conn = await mongoose.connect(process.env.VITE_DB_CONNECTION_STRING);
+            console.log(`MongoDB Connected: ${conn.connection.host}`);
+        } catch (error) {
+            console.error(`Error: ${error.message}`);
+            process.exit(1);
+        }
+        };
+
+         export default connectDB;
+
+24/ mkdir models
+
+25/ Créer un fichier : userModel.js et recipeModel.js

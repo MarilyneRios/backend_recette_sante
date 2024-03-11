@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
 import userRoutes from './routes/userRoutes.js';
 import recipeRoutes from './routes/recipeRoutes.js';
@@ -15,6 +16,9 @@ app.use('/api/recipes', recipeRoutes);
 app.get('/', (req, res) => {
     res.send('Server is ready...');
 });
+
+app.use(notFound);
+app.use(errorHandler);
 
 app.listen(port, () => console.log(`Server Started on port ${port}`));
 

@@ -1,12 +1,76 @@
+import asyncHandler from 'express-async-handler';
 
 // @desc    recipes & diplay on homeScreen
 // @route   GET /api/recipes 
 // @access  Public 
-const allRecipes =  (req, res) => {
+const allRecipes = asyncHandler (async (req, res) => {
+
     res.status(200).json({message: 'All recipes'})
-}
+});
+
+// @desc    recipes & diplay on homeScreen && sigIn
+// @route   GET /api/recipes/auth 
+// @access  Private (token)
+const allRecipesAuth = asyncHandler (async (req, res) => {
+
+    res.status(200).json({message: 'Display all recipes when sigIn'})
+});
+
+// @desc    recipes & diplay one recipe on homeScreen && sigIn
+// @route   GET /api/recipes/:token  
+// @access  Private (token)
+const OneRecipeAuth = asyncHandler (async (req, res) => {
+
+    res.status(200).json({message: ' Display one recipe when sigIn'})
+});
+
+// @desc    create one recipe && sigIn
+// @route   POST /api/recipes  
+// @access  Private (token)
+const NewRecipe = asyncHandler (async (req, res) => {
+
+    res.status(200).json({message: 'New recipe created'})
+});
+
+// @desc    Update one recipe && sigIn
+// @route   PUT /api/recipes/:token   
+// @access  Private (token)
+const UpdateRecipe = asyncHandler (async (req, res) => {
+
+    res.status(200).json({message: 'Update recipe successfuly'})
+});
+
+// @desc    Delete one recipe && sigIn
+// @route   DELETE /api/recipes/:token  
+// @access  Private (token)
+const DeleteRecipe = asyncHandler (async (req, res) => {
+
+    res.status(200).json({message: 'Delete recipe successfuly'})
+});
+
+// @desc    Search recipes & diplay one recipe on homeScreen
+// @route   GET /api/recipes/search/:query   
+// @access  Public
+const SearchRecipe = asyncHandler (async (req, res) => {
+
+    res.status(200).json({message: ' Search one recipe successfuly'})
+});
+
+// @desc    Filter recipes by category & diplay one recipe on homeScreen
+// @route   GET /api/recipes/category/:category 
+// @access  Public
+const FilterRecipe = asyncHandler (async (req, res) => {
+
+    res.status(200).json({message: ' Filter recipes by category successfuly'})
+});
 
 export {
     allRecipes,
-    
+    allRecipesAuth,
+    OneRecipeAuth,
+    NewRecipe,
+    UpdateRecipe,
+    DeleteRecipe,
+    SearchRecipe,
+    FilterRecipe
 };
