@@ -1,4 +1,8 @@
 import asyncHandler from 'express-async-handler';
+import generateToken from '../utils/generateToken.js';
+
+import Recipe from '../models/recipeModel.js';
+import User from '../models/userModel.js';
 
 // @desc    recipes & diplay on homeScreen
 // @route   GET /api/recipes 
