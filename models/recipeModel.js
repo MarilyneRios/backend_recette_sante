@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const RecipeSchema = mongoose.Schema ({
     name : {type: String, require : true},
     category:{type: String},
-    ingredients: {type: String},
+    ingredients: [{type: String}],
     instructions: {type: String},
     makingTime: {type: Number},
     cookingTime: {type: Number},

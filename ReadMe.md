@@ -373,6 +373,7 @@ app.use(cookieParser());
 
     export { protect };
 
+
 31/ userRoutes ;
 
 import { protect } from '../middleware/authMiddleware.js';
@@ -381,3 +382,18 @@ router
   .route('/profile')
  .get( protect, getUserProfile) //get: http://localhost:3001/api/users/profile
  .put( protect, updateUserProfile); //put: http://localhost:3001/api/users/profile
+
+
+31/ userController.js:
+
+    logique get profile et put profile
+
+32/ recipeRoute.js 
+
+import { protect } from '../middleware/AuthMiddleware.js';
+////////////////////////////////////////////////////////////////////////////////////
+ajout => protect pour les routes privées
+
+
+33/ recipeRoutes.js:
+
