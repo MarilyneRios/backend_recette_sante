@@ -80,10 +80,11 @@ const logoutUser = (req, res) => {
 const getUserProfile = asyncHandler(async (req, res) => {
    // res.status(200).json({message: 'Get user profil successfully'});
    console.log(req.user);
-   
+
    const user = await User.findById(req.user._id);
 
    if (user) {
+    const token = generateToken(res, user._id); 
      res.json({
         token: token,
        username: user.username,
@@ -102,8 +103,35 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // @route   PUT /api/users/profile
 // @access  Private (token)
 const updateUserProfile = asyncHandler(async (req, res) => {
-    res.status(200).json({message: 'Update user profil successfully'});
-});
+   // res.status(200).json({message: 'Update user profil successfully'});
+
+   console.log(req.user); 
+
+    const user = await User.findById(req.user._id);
+
+    if (user) {
+        user.username = req.body.username || user.username;
+        user.email = req.body.email || user.email;
+    
+         // Si un mot de passe est donné, met à jour du password
+        if (req.body.password) {
+          user.password = req.body.password;
+        }
+    
+         // Sauvegarder les modifications 
+        const updatedUser = await user.save();
+    
+        // Renvoie une réponse JSON contenant les informations mises à jour
+        res.json({
+          _id: updatedUser._id,
+          username: updatedUser.username,
+          email: updatedUser.email,
+        });
+      } else {
+        res.status(404);
+        throw new Error('User not found');
+      }
+    });
 
 
 

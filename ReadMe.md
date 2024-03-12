@@ -307,7 +307,7 @@ app.use(errorHandler);
 
 28/ userController.js :
 
-    const authUser = asyncHandler(async (req, res) => {
+  const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
@@ -372,3 +372,12 @@ app.use(cookieParser());
     });
 
     export { protect };
+
+31/ userRoutes ;
+
+import { protect } from '../middleware/authMiddleware.js';
+
+router
+  .route('/profile')
+ .get( protect, getUserProfile) //get: http://localhost:3001/api/users/profile
+ .put( protect, updateUserProfile); //put: http://localhost:3001/api/users/profile
