@@ -42,10 +42,23 @@ const registerUser = asyncHandler(async (req, res) => {
 // @access  Public 
 const authUser = asyncHandler (async(req, res) => {
    
-   // res.status(401);
-    //throw new Error('Invalid email or password');
-   
-    res.status(200).json({message: 'Auth User'})
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email });
+  
+    if (user && (await user.matchPassword(password))) {
+        const token = generateToken(res, user._id);
+  
+      res.json({
+       token: token,
+       username: user.username,  
+       email: user.email, 
+      });
+    } else {
+      res.status(401);
+      throw new Error('Invalid email or password');
+    }
+  //  res.status(200).json({message: 'Auth User'})
 
 });
 
@@ -53,8 +66,11 @@ const authUser = asyncHandler (async(req, res) => {
 // @route   POST /api/users/logout
 // @access  Public
 const logoutUser = (req, res) => {
-    // Supprime le cookie
-
+     // Supprime le cookie
+     res.cookie('jwt', '', {
+        httpOnly: true,
+        expires: new Date(0),
+      });
       res.status(200).json({ message: 'Logout user successfully' });
     };
 
@@ -62,8 +78,23 @@ const logoutUser = (req, res) => {
 // @route   GET /api/users/profile
 // @access  Private (token)
 const getUserProfile = asyncHandler(async (req, res) => {
-    res.status(200).json({message: 'Get user profil successfully'});
+   // res.status(200).json({message: 'Get user profil successfully'});
+   console.log(req.user);
+   
+   const user = await User.findById(req.user._id);
 
+   if (user) {
+     res.json({
+        token: token,
+       username: user.username,
+       email: user.email,
+     });
+
+     res.status(200).json(user);
+   } else {
+     res.status(404);
+     throw new Error('User not found');
+   }
 });
 
 
