@@ -204,10 +204,10 @@ const DeleteRecipe = asyncHandler(async (req, res) => {
         res.status(401);
         throw new Error("Can't delete this recipe it's not the owner");
       }
-      // Supprimer la recette
+      // 5) Supprimer la recette
       await Recipe.findByIdAndDelete(req.params.id);
       res.json({ message: "Recipe removed" });
-      
+
     } else {
       res.status(404);
       throw new Error("Recipe not delete");
@@ -219,14 +219,33 @@ const DeleteRecipe = asyncHandler(async (req, res) => {
 // @route   GET /api/recipes/search/:query
 // @access  Public
 const SearchRecipe = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: " Search one recipe successfuly" });
+  const query = req.params.query;
+  try {
+    const recipes = await Recipe.find({ name: { $regex: query, $options: 'i' } });
+    res.status(200).json(recipes);
+    console.log(recipes);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+  //res.status(200).json({ message: " Search one recipe successfuly" });
 });
 
 // @desc    Filter recipes by category & diplay one recipe on homeScreen
 // @route   GET /api/recipes/category/:category
 // @access  Public
 const FilterRecipe = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: " Filter recipes by category successfuly" });
+  const query = req.params.query;
+  console.log(`Category: ${query}`);
+  try {
+    const recipes = await Recipe.find({ category: { $regex: query, $options: 'i' }});
+    // Affiche le nombre de recettes trouvées
+    console.log(`Found ${recipes.length} recipes`); 
+    res.status(200).json(recipes);
+  } catch (error) {
+    console.error(`Error: ${error}`); 
+    res.status(500).json(error);
+  }
+  //res.status(200).json({ message: " Filter recipes by category successfuly" });
 });
 
 export {

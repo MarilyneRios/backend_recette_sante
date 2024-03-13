@@ -435,3 +435,8 @@ ajout => protect pour les routes privées
         throw new Error('Error creating recipe');
         }
     });
+
+    les autres routes...
+
+
+34/
