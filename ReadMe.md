@@ -395,5 +395,43 @@ import { protect } from '../middleware/AuthMiddleware.js';
 ajout => protect pour les routes privées
 
 
-33/ recipeRoutes.js:
+33/ recipeController.js:
 
+    const CreateRecipe  = asyncHandler(async (req, res) => {
+    
+        const user = await User.findById(req.user._id);
+
+        if (!user) {
+            res.status(404);
+            throw new Error('User not signed in');
+        }
+
+        const recipe = await Recipe.create({ 
+            name: req.body.name,
+            category: req.body.category,
+            ingredients: req.body.ingredients,
+            instructions: req.body.instructions,
+            makingTime: req.body.makingTime,
+            cookingTime: req.body.cookingTime,
+            comments: req.body.comments,
+            pseudo: req.body.pseudo,
+            imageUrl: req.body.imageUrl,
+            userId: user._id, 
+        });
+
+        if (recipe) {
+
+            const token = generateToken(res,user._id); 
+
+            res.status(201).json({
+                token,
+                username: user.username,
+                email: user.email,
+                recipe, 
+            });
+    
+        } else {
+        res.status(400);
+        throw new Error('Error creating recipe');
+        }
+    });

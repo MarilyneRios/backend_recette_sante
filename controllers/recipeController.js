@@ -8,14 +8,33 @@ import User from "../models/userModel.js";
 // @route   GET /api/recipes
 // @access  Public
 const allRecipes = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: "All recipes" });
+  
+    Recipe.find()
+      .then((recipes) => {
+        return res.json(recipes);
+      })
+      .catch((error) => console.log(error));
+  
+  //res.status(200).json({ message: "All recipes" });
 });
 
 // @desc    recipes & diplay on homeScreen && sigIn
 // @route   GET /api/recipes/auth
 // @access  Private (token)
 const allRecipesAuth = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: "Display all recipes when sigIn" });
+  const user = await User.findById(req.user._id);
+
+  if (!user) {
+      res.status(404);
+      throw new Error('User not signed in');
+  }
+  Recipe.find()
+  .then((recipes) => {
+    return res.json(recipes);
+  })
+  .catch((error) => console.log(error));
+
+  //res.status(200).json({ message: "Display all recipes when sigIn" });
 });
 
 // @desc    recipes & diplay one recipe on homeScreen && sigIn
