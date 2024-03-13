@@ -8,13 +8,12 @@ import User from "../models/userModel.js";
 // @route   GET /api/recipes
 // @access  Public
 const allRecipes = asyncHandler(async (req, res) => {
-  
-    Recipe.find()
-      .then((recipes) => {
-        return res.json(recipes);
-      })
-      .catch((error) => console.log(error));
-  
+  Recipe.find()
+    .then((recipes) => {
+      return res.json(recipes);
+    })
+    .catch((error) => console.log(error));
+
   //res.status(200).json({ message: "All recipes" });
 });
 
@@ -25,14 +24,14 @@ const allRecipesAuth = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
 
   if (!user) {
-      res.status(404);
-      throw new Error('User not signed in');
+    res.status(404);
+    throw new Error("User not signed in");
   }
   Recipe.find()
-  .then((recipes) => {
-    return res.json(recipes);
-  })
-  .catch((error) => console.log(error));
+    .then((recipes) => {
+      return res.json(recipes);
+    })
+    .catch((error) => console.log(error));
 
   //res.status(200).json({ message: "Display all recipes when sigIn" });
 });
@@ -41,49 +40,78 @@ const allRecipesAuth = asyncHandler(async (req, res) => {
 // @route   GET /api/recipes/:token
 // @access  Private (token)
 const OneRecipeAuth = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: " Display one recipe when sigIn" });
+  //Si user connecté
+  const user = await User.findById(req.user._id);
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not signed in");
+  }
+
+  //Rechercher recipe by id
+  const id = req.params.id;
+
+  Recipe.findById( id )
+  .then((recipe) => {
+    console.log(recipe);
+      if (recipe) {
+        return res.json({
+          name: recipe.name,
+          category: recipe.category,
+          ingredients: recipe.ingredients,
+          instructions: recipe.instructions,
+          makingTime: recipe.makingTime,
+          cookingTime: recipe.cookingTime,
+          comments: recipe.comments,
+          pseudo: recipe.pseudo,
+          imageUrl: recipe.imageUrl,
+        });
+      } else {
+        res.status(404);
+        throw new Error("Recipe not found");
+      }
+    })
+    .catch((error) => res.json(error));
+  //res.status(200).json({ message: " Display one recipe when sigIn" });
 });
 
 // @desc    create one recipe && sigIn
 // @route   POST /api/recipes
 // @access  Private (token)
-const CreateRecipe  = asyncHandler(async (req, res) => {
-   
-    const user = await User.findById(req.user._id);
+const CreateRecipe = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
 
-    if (!user) {
-        res.status(404);
-        throw new Error('User not signed in');
-    }
+  if (!user) {
+    res.status(404);
+    throw new Error("User not signed in");
+  }
 
-    const recipe = await Recipe.create({ 
-        name: req.body.name,
-        category: req.body.category,
-        ingredients: req.body.ingredients,
-        instructions: req.body.instructions,
-        makingTime: req.body.makingTime,
-        cookingTime: req.body.cookingTime,
-        comments: req.body.comments,
-        pseudo: req.body.pseudo,
-        imageUrl: req.body.imageUrl,
-        userId: user._id, 
+  const recipe = await Recipe.create({
+    name: req.body.name,
+    category: req.body.category,
+    ingredients: req.body.ingredients,
+    instructions: req.body.instructions,
+    makingTime: req.body.makingTime,
+    cookingTime: req.body.cookingTime,
+    comments: req.body.comments,
+    pseudo: req.body.pseudo,
+    imageUrl: req.body.imageUrl,
+    userId: user._id,
+  });
+
+  if (recipe) {
+    const token = generateToken(res, user._id);
+
+    res.status(201).json({
+      token,
+      username: user.username,
+      email: user.email,
+      recipe,
     });
-
-    if (recipe) {
-
-        const token = generateToken(res,user._id); 
-
-        res.status(201).json({
-            token,
-            username: user.username,
-            email: user.email,
-            recipe, 
-        });
- 
-    } else {
-      res.status(400);
-      throw new Error('Error creating recipe');
-    }
+  } else {
+    res.status(400);
+    throw new Error("Error creating recipe");
+  }
   // res.status(200).json({message: 'New recipe created'})
 });
 
