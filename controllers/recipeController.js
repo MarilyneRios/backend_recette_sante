@@ -119,8 +119,8 @@ const CreateRecipe = asyncHandler(async (req, res) => {
 // @route   PUT /api/recipes/:id
 // @access  Private (token)
 const UpdateRecipe = asyncHandler(async (req, res) => {
-   //Si user connecté
-   
+  
+  //Si user connecté
   console.log(req.user); 
   const user = await User.findById(req.user._id);
 
@@ -234,6 +234,7 @@ const SearchRecipe = asyncHandler(async (req, res) => {
 // @route   GET /api/recipes/category/:category
 // @access  Public
 const FilterRecipe = asyncHandler(async (req, res) => {
+ 
   const query = req.params.query;
   console.log(`Category: ${query}`);
   try {
@@ -266,15 +267,65 @@ const oneRecipesFavorite = asyncHandler(async (req, res) => {
 // @route   POST /api/recipes/addRecipeFavorite
 // @access  Private
 const addRecipeFavorite  = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: "Add 1 recipe to favorites by user successfully" });
+  
+  //Si user connecté
+  console.log(req.user); 
+  const user = await User.findById(req.user._id);
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not signed in");
+  }
+  // modifier recipe
+  const recipe = await Recipe.findById(req.params.id);
+  console.log(recipe); 
+
+   //pousser la recette et sauvegarder
+   try {
+     user.savedRecipes.push(recipe);
+     await user.save();
+     return res.json({ savedRecipes: user.savedRecipes });
+   } catch (error) {
+     return res.json(error);
+   }
+  // res.status(200).json({ message: "Add 1 recipe to favorites by user successfully" });
 });
 
 // @desc    Remove 1 recipe from favorite recipes by user on homeScreen
 // @route   DELETE /api/recipes/removeRecipeFavorite/:id
 // @access  Private
 const removeRecipeFavorite = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: "Remove 1 recipe from favorites by user successfully" });
-});
+   //Si user connecté
+   console.log(req.user); 
+   const user = await User.findById(req.user._id);
+ 
+   if (!user) {
+     res.status(404);
+     throw new Error("User not signed in");
+   }
+   // modifier recipe
+   const recipe = await Recipe.findById(req.params.id);
+   console.log(recipe); 
+
+    //Retirer recipe from favorite recipes et non supprimer de la base de données
+    // => .indexOf(req.params.id); au lieu de findByIdAndDelete()
+
+    // 1)  trouver l'index dans le tableau savedRecipes
+    const index = user.savedRecipes.indexOf(req.params.id);
+   //une valeur  > -1 => l’élément a été trouvé dans le tableau (tableau commence à 0)
+    if (index > -1) {
+      // 2) supprimer l’élément à cet index du tableau => .splice(index, 1)
+      user.savedRecipes.splice(index, 1);
+
+      // 3) sauvegarder la modification
+      await user.save();
+      res.json({ message: "Recipe removed from favorite recipes" });
+    } else {
+      res.status(404);
+      throw new Error("Recipe not found in favorite recipes");
+    }
+ });
+ 
 
 
 export {

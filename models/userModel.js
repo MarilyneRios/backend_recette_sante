@@ -24,7 +24,11 @@ const UserSchema = mongoose.Schema(
         unique:true,
         // Générer un token par défaut lors de la création de l'utilisateur
         default: function() {return uid2(32)}
-    }
+    },
+    savedRecipes: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Recipe",
+  }]
   },
   // La date et l’heure de création ou modication du document
   // Mongoose ajoute automatiquement les champs createdAt et updatedAt

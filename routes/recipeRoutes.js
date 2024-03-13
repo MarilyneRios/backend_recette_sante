@@ -31,7 +31,7 @@ router.get('/filterRecipe/:query', FilterRecipe); // get: http://localhost:3001/
 
 router.get('/allRecipesFavorite',protect, allRecipesFavorite); //get: http://localhost:3001/api/recipes/allRecipesFavorite
 router.get('/oneRecipesFavorite/:id',protect, oneRecipesFavorite); // get : http://localhost:3001/api/recipes/oneRecipesFavorite/idRecipe
-router.post('/addRecipeFavorite',protect, addRecipeFavorite); // post : http://localhost:3001/api/recipes/addRecipeFavorite
+router.post('/addRecipeFavorite/:id',protect, addRecipeFavorite); // post : http://localhost:3001/api/recipes/addRecipeFavorite/idRecipe
 router.delete('/removeRecipeFavorite/:id',protect, removeRecipeFavorite); // delete : http://localhost:3001/api/recipes/removeRecipeFavorite/idRecipe
 
 
