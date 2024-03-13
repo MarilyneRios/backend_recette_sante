@@ -116,17 +116,103 @@ const CreateRecipe = asyncHandler(async (req, res) => {
 });
 
 // @desc    Update one recipe && sigIn
-// @route   PUT /api/recipes/:token
+// @route   PUT /api/recipes/:id
 // @access  Private (token)
 const UpdateRecipe = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: "Update recipe successfuly" });
+   //Si user connecté
+   
+  console.log(req.user); 
+  const user = await User.findById(req.user._id);
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not signed in");
+  }
+  // modifier recipe
+  const recipe = await Recipe.findById(req.params.id); //attention req.params.id et non req.params._id
+  console.log(recipe); 
+
+  if(recipe){
+
+    // Vérifier si la recette a une propriété 'user'
+  if (!recipe.userId) {
+    res.status(404);
+    throw new Error("The recipe hasn't 'user'");
+  }
+
+  // Vérifier si l'utilisateur = créateur de la recette
+  if (recipe.userId.toString() !== req.user._id.toString()) {
+    res.status(401);
+    throw new Error("Can't update this recipe it's not the owner");
+  }
+  
+    // Trouver la recette
+    recipe.name = req.body.name || recipe.name;
+
+    
+    // Sauvegarder les modifications   
+    const updatedRecipe = await recipe.save();
+
+    // Renvoie une réponse JSON contenant les informations mises à jou
+    res.json({
+      _id: updatedRecipe._id,
+      name: updatedRecipe.name,
+      category: updatedRecipe.category,
+      ingredients: updatedRecipe.ingredients,
+      instructions: updatedRecipe.instructions,
+      makingTime: updatedRecipe.makingTime,
+      cookingTime: updatedRecipe.cookingTime,
+      comments: updatedRecipe.comments,
+      pseudo: updatedRecipe.pseudo,
+      imageUrl: updatedRecipe.imageUrl,
+      message: "Recipe updated"
+    });
+    
+    } else {
+      res.status(404);
+      throw new Error("Recipe not found");
+    }
+ // res.status(200).json({ message: "Update recipe successfuly" });
 });
 
 // @desc    Delete one recipe && sigIn
-// @route   DELETE /api/recipes/:token
+// @route   DELETE /api/recipes/:id
 // @access  Private (token)
 const DeleteRecipe = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: "Delete recipe successfuly" });
+   
+  // 1) Si user connecté
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      res.status(404);
+      throw new Error("User not signed in");
+    }
+
+    // 2) trouver la recipe avec params.id
+    const recipe = await Recipe.findByIdAndDelete(req.params.id);
+
+    if(recipe){
+
+      // 3) Vérifier si la recette a une propriété 'user'
+      if (!recipe.userId) {
+        res.status(404);
+        throw new Error("The recipe hasn't 'user'");
+      }
+    
+      // 4) Vérifier si l'utilisateur = créateur de la recette
+      if (recipe.userId.toString() !== req.user._id.toString()) {
+        res.status(401);
+        throw new Error("Can't delete this recipe it's not the owner");
+      }
+      // Supprimer la recette
+      await Recipe.findByIdAndDelete(req.params.id);
+      res.json({ message: "Recipe removed" });
+      
+    } else {
+      res.status(404);
+      throw new Error("Recipe not delete");
+    }
+ // res.status(200).json({ message: "Delete recipe successfuly" });
 });
 
 // @desc    Search recipes & diplay one recipe on homeScreen
