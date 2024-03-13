@@ -253,14 +253,52 @@ const FilterRecipe = asyncHandler(async (req, res) => {
 // @route   GET /api/recipes/allRecipesFavorite
 // @access  Private
 const allRecipesFavorite = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: " diplay favorite recipes by user successfuly" });
+  //Si user connecté
+  console.log(req.user); 
+  const user = await User.findById(req.user._id);
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not signed in");
+  }
+ 
+  // Rechercher les savedRecipes par user
+  const savedRecipes = await Recipe.find({
+    '_id': { $in: user.savedRecipes }
+  });
+
+  if (savedRecipes) {
+    return res.json(savedRecipes);
+  } else {
+    res.status(404);
+    throw new Error("No favorite recipes found");
+  }
+ // res.status(200).json({ message: " diplay favorite recipes by user successfuly" });
 });
 
 // @desc    Display 1 recipe of favorite recipes by user on homeScreen
 // @route   GET /api/recipes/oneRecipesFavorite/:id
 // @access  Private
 const oneRecipesFavorite = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: "Display 1 recipe of favorite recipes by user successfully" });
+  console.log(req.user); 
+  const user = await User.findById(req.user._id);
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not signed in");
+  }
+ 
+  // Rechercher 1 savedRecipe par user
+  const savedRecipes = await Recipe.findOne({
+    '_id': { $in: user.savedRecipes }
+  });
+
+  if (savedRecipes) {
+    return res.json(savedRecipes);
+  } else {
+    res.status(404);
+    throw new Error("No favorite recipes found");
+  }
 });
 
 // @desc    Add 1 recipe to favorite recipes by user on homeScreen
