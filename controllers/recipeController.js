@@ -248,6 +248,35 @@ const FilterRecipe = asyncHandler(async (req, res) => {
   //res.status(200).json({ message: " Filter recipes by category successfuly" });
 });
 
+// @desc    Diplay favorite recipes by user on homeScreen
+// @route   GET /api/recipes/allRecipesFavorite
+// @access  Private
+const allRecipesFavorite = asyncHandler(async (req, res) => {
+  res.status(200).json({ message: " diplay favorite recipes by user successfuly" });
+});
+
+// @desc    Display 1 recipe of favorite recipes by user on homeScreen
+// @route   GET /api/recipes/oneRecipesFavorite/:id
+// @access  Private
+const oneRecipesFavorite = asyncHandler(async (req, res) => {
+  res.status(200).json({ message: "Display 1 recipe of favorite recipes by user successfully" });
+});
+
+// @desc    Add 1 recipe to favorite recipes by user on homeScreen
+// @route   POST /api/recipes/addRecipeFavorite
+// @access  Private
+const addRecipeFavorite  = asyncHandler(async (req, res) => {
+  res.status(200).json({ message: "Add 1 recipe to favorites by user successfully" });
+});
+
+// @desc    Remove 1 recipe from favorite recipes by user on homeScreen
+// @route   DELETE /api/recipes/removeRecipeFavorite/:id
+// @access  Private
+const removeRecipeFavorite = asyncHandler(async (req, res) => {
+  res.status(200).json({ message: "Remove 1 recipe from favorites by user successfully" });
+});
+
+
 export {
   allRecipes,
   allRecipesAuth,
@@ -257,4 +286,8 @@ export {
   DeleteRecipe,
   SearchRecipe,
   FilterRecipe,
+  allRecipesFavorite,
+  oneRecipesFavorite,
+  addRecipeFavorite,
+  removeRecipeFavorite,
 };

@@ -439,4 +439,17 @@ ajout => protect pour les routes privées
     les autres routes...
 
 
-34/
+34/ quand vous avez ce message:
+
+(node:13820) MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 exit listeners added to [Bus]. Use emitter.setMaxListeners() to increase limit
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+**Ajouter EventEmitter** dans **server.js**:
+EventEmitter **facilite la communication** entre différents objets de votre application Node.js via des événements.
+
+////////////////////////////////////////////////////////////////////////////////
+    import { EventEmitter } from 'events';
+
+    EventEmitter.defaultMaxListeners = 15;
+////////////////////////////////////////////////////////////////////////////////
+**Définit le nombre maximum d’écouteurs** qui peuvent être ajoutés à un EventEmitter avant que Node.js n’émette un avertissement. Par **défaut**, ce nombre est **10**

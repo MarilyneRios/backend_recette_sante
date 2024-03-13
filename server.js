@@ -3,6 +3,9 @@ import dotenv from 'dotenv';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import connectDB from './config/db.js';
 import cookieParser from 'cookie-parser';
+import { EventEmitter } from 'events';
+
+EventEmitter.defaultMaxListeners = 15;
 
 import userRoutes from './routes/userRoutes.js';
 import recipeRoutes from './routes/recipeRoutes.js';
