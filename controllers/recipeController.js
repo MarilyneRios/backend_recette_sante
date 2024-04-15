@@ -155,7 +155,7 @@ const UpdateRecipe = asyncHandler(async (req, res) => {
     throw new Error("User not signed in");
   }
   // modifier recipe
-  const recipe = await Recipe.findById(req.params.id); //attention req.params.id et non req.params._id
+  const recipe = await Recipe.findById(req.params.id); 
   console.log(recipe); 
 
   if(recipe){
@@ -172,8 +172,16 @@ const UpdateRecipe = asyncHandler(async (req, res) => {
     throw new Error("Can't update this recipe it's not the owner");
   }
   
-    // Trouver la recette
+    // Trouver la recette et modifier
     recipe.name = req.body.name || recipe.name;
+    if(req.body.category) recipe.category = req.body.category;
+    if(req.body.ingredients) recipe.ingredients = req.body.ingredients;
+    if(req.body.instructions) recipe.instructions = req.body.instructions;
+    if(req.body.makingTime) recipe.makingTime = req.body.makingTime;
+    if(req.body.cookingTime) recipe.cookingTime = req.body.cookingTime;
+    if(req.body.comments) recipe.comments = req.body.comments;
+    if(req.body.pseudo) recipe.pseudo = req.body.pseudo;
+    if(req.body.imageUrl) recipe.imageUrl = req.body.imageUrl;
 
     
     // Sauvegarder les modifications   
