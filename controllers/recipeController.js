@@ -5,7 +5,7 @@ import Recipe from "../models/recipeModel.js";
 import User from "../models/userModel.js";
 
 // @desc    recipes & diplay one recipe on homeScreen && sigIn
-// @route   GET /api/recipes/:token
+// @route   GET /api/recipes/:id
 // @access  Private (token)
 const viewRecipeAuth = asyncHandler(async (req, res) => {
   //Si user connecté
@@ -24,6 +24,7 @@ const viewRecipeAuth = asyncHandler(async (req, res) => {
     console.log(recipe);
       if (recipe) {
         return res.json({
+          _id: recipe._id,
           name: recipe.name,
           category: recipe.category,
           ingredients: recipe.ingredients,
@@ -63,7 +64,7 @@ const allRecipesAuth = asyncHandler(async (req, res) => {
 });
 
 // @desc    recipes & diplay one recipe on homeScreen && sigIn
-// @route   GET /api/recipes/:token
+// @route   GET /api/recipes/:id
 // @access  Private (token)
 const OneRecipeAuth = asyncHandler(async (req, res) => {
   //Si user connecté
@@ -82,6 +83,7 @@ const OneRecipeAuth = asyncHandler(async (req, res) => {
     console.log(recipe);
       if (recipe) {
         return res.json({
+          _id: recipe._id,
           name: recipe.name,
           category: recipe.category,
           ingredients: recipe.ingredients,
