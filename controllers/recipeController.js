@@ -4,17 +4,43 @@ import generateToken from "../utils/generateToken.js";
 import Recipe from "../models/recipeModel.js";
 import User from "../models/userModel.js";
 
-// @desc    recipes & diplay on homeScreen
-// @route   GET /api/recipes
-// @access  Public
-const allRecipes = asyncHandler(async (req, res) => {
-  Recipe.find()
-    .then((recipes) => {
-      return res.json(recipes);
-    })
-    .catch((error) => console.log(error));
+// @desc    recipes & diplay one recipe on homeScreen && sigIn
+// @route   GET /api/recipes/:token
+// @access  Private (token)
+const viewRecipeAuth = asyncHandler(async (req, res) => {
+  //Si user connecté
+  const user = await User.findById(req.user._id);
 
-  //res.status(200).json({ message: "All recipes" });
+  if (!user) {
+    res.status(404);
+    throw new Error("User not signed in");
+  }
+
+  //Rechercher recipe by id
+  const id = req.params.id;
+
+  Recipe.findById( id )
+  .then((recipe) => {
+    console.log(recipe);
+      if (recipe) {
+        return res.json({
+          name: recipe.name,
+          category: recipe.category,
+          ingredients: recipe.ingredients,
+          instructions: recipe.instructions,
+          makingTime: recipe.makingTime,
+          cookingTime: recipe.cookingTime,
+          comments: recipe.comments,
+          pseudo: recipe.pseudo,
+          imageUrl: recipe.imageUrl,
+        });
+      } else {
+        res.status(404);
+        throw new Error("Recipe not found");
+      }
+    })
+    .catch((error) => res.json(error));
+  //res.status(200).json({ message: " Display one recipe when sigIn" });
 });
 
 // @desc    recipes & diplay on homeScreen && sigIn
@@ -367,7 +393,7 @@ const removeRecipeFavorite = asyncHandler(async (req, res) => {
 
 
 export {
-  allRecipes,
+  viewRecipeAuth,
   allRecipesAuth,
   OneRecipeAuth,
   CreateRecipe,

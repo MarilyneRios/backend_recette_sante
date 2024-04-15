@@ -1,7 +1,7 @@
 
 import express from 'express';
 import {
-    allRecipes,
+    viewRecipeAuth,
     allRecipesAuth,
     OneRecipeAuth,
     CreateRecipe,
@@ -18,9 +18,10 @@ import { protect } from '../middleware/AuthMiddleware.js';
 
 const router = express.Router();
 
-router.get('/allRecipes', allRecipes);  // get : http://localhost:3001/api/recipes/allRecipes
 router.get('/allRecipesAuth',protect, allRecipesAuth); //get : http://localhost:3001/api/recipes/allRecipesAuth
 router.get('/oneRecipeAuth/:id',protect, OneRecipeAuth); // get : http://localhost:3001/api/recipes/oneRecipeAuth/idRecipe
+router.get('/viewRecipeAuth/:id',protect, viewRecipeAuth);  // get : http://localhost:3001/api/recipes/viewRecipeAuth/idRecipe
+//http://localhost:3001/api/recipes/viewRecipeAuth/6611424b3bdbaf3fb9c3d269 OK
 
 router.post('/createRecipe',protect, CreateRecipe); //post : http://localhost:3001/api/recipes/createRecipe
 router.put('/updateRecipe/:id',protect, UpdateRecipe); // put: http://localhost:3001/api/recipes/updateRecipe/idRecipe
