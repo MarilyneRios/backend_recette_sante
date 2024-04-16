@@ -28,7 +28,7 @@ router.put('/updateRecipe/:id',protect, UpdateRecipe); // put: http://localhost:
 router.delete('/deleteRecipe/:id',protect, DeleteRecipe); // delete : http://localhost:3001/api/recipes/deleteRecipe/idRecipe
 
 router.get('/searchRecipe/:query', SearchRecipe); // get: http://localhost:3001/api/recipes/searchRecipe
-router.get('/filterRecipe/:query', FilterRecipe); // get: http://localhost:3001/api/recipes/filterRecipe
+router.get('/filterRecipe/:category', FilterRecipe); // get: http://localhost:3001/api/recipes/filterRecipe
 
 router.get('/allRecipesFavorite',protect, allRecipesFavorite); //get: http://localhost:3001/api/recipes/allRecipesFavorite
 router.get('/oneRecipesFavorite/:id',protect, oneRecipesFavorite); // get : http://localhost:3001/api/recipes/oneRecipesFavorite/idRecipe

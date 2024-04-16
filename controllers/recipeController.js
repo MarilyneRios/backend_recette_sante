@@ -270,12 +270,10 @@ const SearchRecipe = asyncHandler(async (req, res) => {
 // @route   GET /api/recipes/category/:category
 // @access  Public
 const FilterRecipe = asyncHandler(async (req, res) => {
- 
-  const query = req.params.query;
-  console.log(`Category: ${query}`);
+  const category = req.params.category;
+  console.log(`Category: ${category}`);
   try {
-    const recipes = await Recipe.find({ category: { $regex: query, $options: 'i' }});
-    // Affiche le nombre de recettes trouvées
+    const recipes = await Recipe.find({ category: { $regex: category, $options: 'i' }});
     console.log(`Found ${recipes.length} recipes`); 
     res.status(200).json(recipes);
   } catch (error) {
