@@ -20,8 +20,9 @@ connectDB();
 const app = express(); 
 const port = process.env.PORT || 3001;
 
-const devOrigin = ['http://localhost:3000'];
-const allowedOrigins = getEnvironmentVariable('NODE_ENV') === 'production' ? prodOrigins : devOrigin;
+
+const allowedOrigins = process.env.NODE_ENV === 'production' ? ['http://localhost:3000'] : devOrigin;
+//const allowedOrigins = getEnvironmentVariable('NODE_ENV') === 'production' ? prodOrigins : devOrigin;
 
 app.use(
   cors({
