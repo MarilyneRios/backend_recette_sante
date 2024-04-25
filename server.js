@@ -21,22 +21,9 @@ const app = express();
 const port = process.env.PORT || 3001;
 
 
-const allowedOrigins = process.env.NODE_ENV === 'production' ? ['http://localhost:3000'] : devOrigin;
-//const allowedOrigins = getEnvironmentVariable('NODE_ENV') === 'production' ? prodOrigins : devOrigin;
-
 app.use(
   cors({
-    origin: (origin, callback) => {
-      if (process.env.NODE_ENV === 'production') {
-        if (!origin || allowedOrigins.includes(origin)) {
-          callback(null, true);
-        } else {
-          callback(new Error(`${origin} not allowed by cors`));
-        }
-      } else {
-        callback(null, true);
-      }
-    },
+
     optionsSuccessStatus: 200,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
