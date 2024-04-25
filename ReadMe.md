@@ -455,7 +455,7 @@ EventEmitter **facilite la communication** entre différents objets de votre app
 **Définit le nombre maximum d’écouteurs** qui peuvent être ajoutés à un EventEmitter avant que Node.js n’émette un avertissement. Par **défaut**, ce nombre est **10**
 
 35/ touch vercel.json
-
+ 
     {
         "version": 2,
         "builds": [{
@@ -467,3 +467,12 @@ EventEmitter **facilite la communication** entre différents objets de votre app
         "dest": "app.js"
         }]
     }
+
+36/ site vercel
+
+- connexion
+- +add new > project
+- choisir le dépôt git
+- variable environnement
+
+
