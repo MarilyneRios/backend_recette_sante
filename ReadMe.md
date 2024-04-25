@@ -454,17 +454,38 @@ EventEmitter **facilite la communication** entre différents objets de votre app
 ////////////////////////////////////////////////////////////////////////////////
 **Définit le nombre maximum d’écouteurs** qui peuvent être ajoutés à un EventEmitter avant que Node.js n’émette un avertissement. Par **défaut**, ce nombre est **10**
 
-35/ touch vercel.json
+35/ preparation deployment:
+
+a/ dans server.js ajouter:
+
+import path from 'path'; 
+const port = process.env.PORT || 3001;
+
+
+if (process.env.NODE_ENV === 'production') {
+    const __dirname = path.resolve();
+    app.use(express.static(path.join(__dirname, '/frontend/dist')));
+  
+    app.get('*', (req, res) =>
+      res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'))
+    );
+  } else {
+    app.get('/', (req, res) => {
+      res.send('API is running....');
+    });
+  }
+
+b/touch vercel.json
  
     {
         "version": 2,
         "builds": [{
-        "src": "app.js",
+        "src": "server.js",
         "use": "@vercel/node"
         }],
         "routes": [{
         "src": "/(.*)",
-        "dest": "app.js"
+        "dest": "server.js"
         }]
     }
 

@@ -10,7 +10,8 @@ const generateToken = (res, userId) => {
   res.cookie('jwt', token, {
     httpOnly: true,
      // Cette option force le cookie à être envoyé uniquement sur des connexions sécurisées
-    secure: process.env.NODE_ENV !== 'development',
+    //secure: process.env.NODE_ENV !== 'development',
+    secure: process.env.NODE_ENV !== 'production',
     // Cette option empêche le navigateur d’envoyer le cookie lors de requêtes cross-site,
     // ce qui aide à prévenir les attaques de type cross-site request forgery (CSRF).
     sameSite: 'strict', 
