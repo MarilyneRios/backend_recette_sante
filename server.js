@@ -22,10 +22,12 @@ const app = express();
 const port = process.env.PORT || 3001;
 
 app.use(cors({
-  origin: 'https://localhost:3000', 
+  origin: ['http://localhost:3000', 'https://localhost:3000'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+
 
 
 //gérer les données JSON et URL encodées dans les requêtes entrantes
