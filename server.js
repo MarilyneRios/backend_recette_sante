@@ -13,7 +13,6 @@ EventEmitter.defaultMaxListeners = 15;
 import userRoutes from './routes/userRoutes.js';
 import recipeRoutes from './routes/recipeRoutes.js';
 
-
 dotenv.config();
 
 connectDB();
@@ -21,15 +20,36 @@ connectDB();
 const app = express(); 
 const port = process.env.PORT || 3001;
 
+const devOrigin = ['http://localhost:3000'];
+const allowedOrigins = getEnvironmentVariable('NODE_ENV') === 'production' ? prodOrigins : devOrigin;
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (process.env.NODE_ENV === 'production') {
+        if (!origin || allowedOrigins.includes(origin)) {
+          callback(null, true);
+        } else {
+          callback(new Error(`${origin} not allowed by cors`));
+        }
+      } else {
+        callback(null, true);
+      }
+    },
+    optionsSuccessStatus: 200,
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  }),
+);
+
+
+/*
 app.use(cors({
   origin: ['http://localhost:3000', 'https://localhost:3000'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials:true,
   allowedHeaders: ['Content-Type', 'Authorization']
-}));
-
-
-
-
+}));*/
 
 //gérer les données JSON et URL encodées dans les requêtes entrantes
 app.use(express.json());
