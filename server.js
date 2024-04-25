@@ -21,7 +21,12 @@ connectDB();
 const app = express(); 
 const port = process.env.PORT || 3001;
 
-app.use(cors()); //
+app.use(cors({
+  origin: 'https://localhost:3000', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 
 //gérer les données JSON et URL encodées dans les requêtes entrantes
 app.use(express.json());
