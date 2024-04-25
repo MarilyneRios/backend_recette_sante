@@ -30,6 +30,7 @@ app.use(cors({
 
 
 
+
 //gérer les données JSON et URL encodées dans les requêtes entrantes
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
