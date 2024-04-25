@@ -26,7 +26,9 @@ const viewRecipeAuth = asyncHandler(async (req, res) => {
         return res.json({
           _id: recipe._id,
           name: recipe.name,
+          country:recipe.country,
           category: recipe.category,
+          regime:recipe.regime,
           ingredients: recipe.ingredients,
           instructions: recipe.instructions,
           makingTime: recipe.makingTime,
@@ -85,7 +87,9 @@ const OneRecipeAuth = asyncHandler(async (req, res) => {
         return res.json({
           _id: recipe._id,
           name: recipe.name,
+          country:recipe.country,
           category: recipe.category,
+          regime: recipe.regime,
           ingredients: recipe.ingredients,
           instructions: recipe.instructions,
           makingTime: recipe.makingTime,
@@ -116,7 +120,9 @@ const CreateRecipe = asyncHandler(async (req, res) => {
 
   const recipe = await Recipe.create({
     name: req.body.name,
+    country:req.body.country,
     category: req.body.category,
+    regime: req.body.regime,
     ingredients: req.body.ingredients,
     instructions: req.body.instructions,
     makingTime: req.body.makingTime,
@@ -177,7 +183,9 @@ const UpdateRecipe = asyncHandler(async (req, res) => {
     // Trouver la recette et modifier
     recipe.name = req.body.name || recipe.name;
     if(req.body.category) recipe.category = req.body.category;
+    if(req.body.country) recipe.country = req.body.country;
     if(req.body.ingredients) recipe.ingredients = req.body.ingredients;
+    if(req.body.regime) recipe.regime = req.body.regime;
     if(req.body.instructions) recipe.instructions = req.body.instructions;
     if(req.body.makingTime) recipe.makingTime = req.body.makingTime;
     if(req.body.cookingTime) recipe.cookingTime = req.body.cookingTime;
@@ -193,7 +201,9 @@ const UpdateRecipe = asyncHandler(async (req, res) => {
     res.json({
       _id: updatedRecipe._id,
       name: updatedRecipe.name,
+      country:updatedRecipe.country,
       category: updatedRecipe.category,
+      regime: updatedRecipe.regime,
       ingredients: updatedRecipe.ingredients,
       instructions: updatedRecipe.instructions,
       makingTime: updatedRecipe.makingTime,
@@ -251,20 +261,22 @@ const DeleteRecipe = asyncHandler(async (req, res) => {
  // res.status(200).json({ message: "Delete recipe successfuly" });
 });
 
-// @desc    Search recipes & diplay one recipe on homeScreen
+// @desc    Search recipes & display one recipe on homeScreen
 // @route   GET /api/recipes/search/:query
 // @access  Public
 const SearchRecipe = asyncHandler(async (req, res) => {
   const query = req.params.query;
   try {
-    const recipes = await Recipe.find({ name: { $regex: query, $options: 'i' } });
+    const recipes = await Recipe.find({
+      $text: { $search: query } // $text est insensible à la casse
+    });
     res.status(200).json(recipes);
     console.log(recipes);
   } catch (error) {
     res.status(500).json(error);
   }
-  //res.status(200).json({ message: " Search one recipe successfuly" });
 });
+
 
 // @desc    Filter recipes by category & diplay one recipe on homeScreen
 // @route   GET /api/recipes/category/:category

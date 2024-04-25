@@ -5,6 +5,7 @@ import {
     logoutUser,
     getUserProfile,
     updateUserProfile,
+    deleteUserProfile,
 } from '../controllers/userController.js';
 import { protect } from '../middleware/AuthMiddleware.js';
 
@@ -17,6 +18,7 @@ router.post('/logout', logoutUser); //post: http://localhost:3001/api/users/logo
 router
   .route('/profile')
  .get( protect, getUserProfile) //get: http://localhost:3001/api/users/profile
- .put( protect, updateUserProfile); //put: http://localhost:3001/api/users/profile
+ .put( protect, updateUserProfile) //put: http://localhost:3001/api/users/profile
+ .delete(protect, deleteUserProfile); //delete: http://localhost:3001/api/users/profile
 
 export default router;

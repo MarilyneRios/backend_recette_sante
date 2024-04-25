@@ -10,11 +10,17 @@ const registerUser = asyncHandler(async (req, res) => {
     const { username, email, password} = req.body;  
     console.log(`le username : ${username}, le email : ${email}, et le password : ${password}`);
 
-    const userExists = await User.findOne({email });
+    const userExists = await User.findOne({ $or: [{ email }, { username }] });
 
     if (userExists) {
+      if (userExists.email === email) {
         res.status(400);
-        throw new Error('User already exists');
+        throw new Error('Email already exists');
+      }
+      if (userExists.username === username) {
+        res.status(400);
+        throw new Error('Username already exists');
+      }
     }
 
     const user = await User.create({ username, email, password});
@@ -87,6 +93,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
     const token = generateToken(res, user._id); 
      res.json({
         token: token,
+        avatar:user.avatar,
        username: user.username,
        email: user.email,
      });
@@ -112,7 +119,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     if (user) {
         user.username = req.body.username || user.username;
         user.email = req.body.email || user.email;
-    
+        user.avatar = req.body.avatar || user.avatar;
          // Si un mot de passe est donné, met à jour du password
         if (req.body.password) {
           user.password = req.body.password;
@@ -126,6 +133,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
           _id: updatedUser._id,
           username: updatedUser.username,
           email: updatedUser.email,
+          avatar: updatedUser.avatar,
         });
       } else {
         res.status(404);
@@ -133,6 +141,23 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       }
     });
 
+// @desc    delete user profile
+// @route   DELETE /api/users/profile
+// @access  Private (token)
+const deleteUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
+  await User.deleteOne({ _id: req.user._id });
+  res.json({ message: "User removed" });
+});
+
+    
+    
 
 
 export {
@@ -141,5 +166,6 @@ export {
     logoutUser,
     getUserProfile,
     updateUserProfile,
+    deleteUserProfile,
 };
 
