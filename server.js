@@ -14,31 +14,19 @@ import userRoutes from './routes/userRoutes.js';
 import recipeRoutes from './routes/recipeRoutes.js';
 
 dotenv.config();
-
 connectDB();
 
 const app = express(); 
-const port = process.env.PORT || 3001;
-
+const port = process.env.NODE_ENV === 'production' ? process.env.PORT : 3001;
 
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'https://localhost:3000'],
-    optionsSuccessStatus: 200,
+    origin: ['http://localhost:3000/api/users', 'https://localhost:3000/api/recipes'],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
   }),
 );
-
-
-/*
-app.use(cors({
-  origin: ['http://localhost:3000', 'https://localhost:3000'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials:true,
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));*/
 
 //gérer les données JSON et URL encodées dans les requêtes entrantes
 app.use(express.json());
@@ -49,11 +37,9 @@ app.use(cookieParser());
 // Le terme “api”  est une convention lors de la création d’APIs Web.
 app.use('/api/users', userRoutes);
 app.use('/api/recipes', recipeRoutes);
-/*
-app.get('/', (req, res) => { res.send('Server is ready...');});*/
 
-app.get("/", (req, res) => { res.send("Express on Vercel"); }); 
-
+//msg sur vercel
+app.get("/", (req, res) => { res.send("Server is ready..."); }); 
 
 app.use(notFound);
 app.use(errorHandler);
