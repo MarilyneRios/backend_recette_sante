@@ -21,7 +21,7 @@ const port = process.env.NODE_ENV === 'production' ? process.env.PORT : 3001;
 
 app.use(
   cors({
-    origin: ['http://localhost:3000/api/users', 'http://localhost:3000/api/recipes'],
+    origin: ['http://localhost:3000'],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
   }),
