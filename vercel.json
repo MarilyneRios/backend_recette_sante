@@ -1,11 +1,10 @@
 
 {
   "version": 2,
-
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/backend/server.js"
-    }
-  ]
+ "rewrites": [
+  {
+    "src": "/(.*)",
+    "destination": "backend"
+  }
+ ]
 }
