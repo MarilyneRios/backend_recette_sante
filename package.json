@@ -3,17 +3,14 @@
   "version": "1.0.0",
   "description": "Les recette santé",
   "type": "module",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "server": "nodemon server.js",
-    "build": "echo 'Pas d'étape de construction'"
+    "server": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
