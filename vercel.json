@@ -4,7 +4,7 @@
  "rewrites": [
   {
     "src": "/(.*)",
-    "destination": "backend"
+    "destination": "/backend"
   }
  ]
 }
