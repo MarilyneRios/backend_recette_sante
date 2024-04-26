@@ -1,7 +1,8 @@
 
 {
   "version": 2,
-  "buildCommand": "npm install && npm run build",
+
+  "builds": [{"src": "*.js", "use": "@vercel/node"}],
   "routes": [
     {
       "src": "/(.*)",
