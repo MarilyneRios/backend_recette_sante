@@ -24,7 +24,6 @@ app.use(
     origin: ['http://localhost:3000/api'],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-   
   }),
 );
 
