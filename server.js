@@ -6,7 +6,7 @@ import connectDB from './config/db.js';
 import cookieParser from 'cookie-parser';
 import { EventEmitter } from 'events';
 import path from 'path'; 
-import cors from 'cors';//
+import cors from 'cors';
 
 EventEmitter.defaultMaxListeners = 15;
 
@@ -28,7 +28,7 @@ app.use(
   }),
 );
 
-//gérer les données JSON et URL encodées dans les requêtes entrantes
+//gérer les données JSON et URL encodées dans les requêtes entinstallrantes
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
