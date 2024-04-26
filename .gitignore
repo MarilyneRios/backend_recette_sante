@@ -5,3 +5,6 @@ jspm_packages/
 # dotenv environment variables file
 *.env
 .vercel
+
+# Local Netlify folder
+.netlify
