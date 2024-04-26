@@ -1,9 +1,10 @@
 {
   "version": 2,
+  "buildCommand": "npm install && npm run start",
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/"
+      "dest": "/server.js"
     }
   ]
 }
