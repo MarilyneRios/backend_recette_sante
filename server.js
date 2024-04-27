@@ -16,6 +16,8 @@ import recipeRoutes from './routes/recipeRoutes.js';
 dotenv.config();
 connectDB();
 
+
+const __dirname = path.resolve(); //test ex blog
 const app = express(); 
 const port = process.env.NODE_ENV === 'production' ? process.env.PORT : 3001;
 
@@ -34,13 +36,22 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(cookieParser());
 
+app.listen(port, () => console.log(`Server Started on port ${port}`));
+
 // Le terme “api”  est une convention lors de la création d’APIs Web.
 app.use('/api/users', userRoutes);
 app.use('/api/recipes', recipeRoutes);
 
 //msg sur vercel
+app.use(express.static(path.join(__dirname, '/client/dist')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+});
+
 //app.get("/", (req, res) => { res.send("Server is ready..."); }); 
-if (process.env.NODE_ENV === 'production') {
+/**
+  if (process.env.NODE_ENV === 'production') {
   const __dirname = path.resolve();
   app.use(express.static(path.join(__dirname, '/frontend/dist')));
 
@@ -50,9 +61,11 @@ if (process.env.NODE_ENV === 'production') {
 } else {
   app.get('/', (req, res) => { res.send('API is running....'); });
 }
+ 
+ */
 
 app.use(notFound);
 app.use(errorHandler);
 
-app.listen(port, () => console.log(`Server Started on port ${port}`));
+
 
