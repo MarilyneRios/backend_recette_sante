@@ -25,8 +25,8 @@ app.use(
   cors({
     origin: [
       'http://localhost:3000',
-      'https://frontend-recette-sante.vercel.app/',
-      'https://frontend-recette-sante-ca0mfak3s-marilynerios-projects.vercel.app'
+      'https://frontend-recette-sante-xq26.vercel.app/',
+      'https://frontend-recette-sante-xq26-ffykkmh0k-marilynerios-projects.vercel.app'
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
