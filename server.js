@@ -17,7 +17,7 @@ dotenv.config();
 connectDB();
 
 
-const __dirname = path.resolve(); //test ex blog
+const __dirname = path.resolve(); //
 const app = express(); 
 const port = process.env.NODE_ENV === 'production' ? process.env.PORT : 3001;
 
@@ -43,10 +43,10 @@ app.use('/api/users', userRoutes);
 app.use('/api/recipes', recipeRoutes);
 
 //msg sur vercel
-app.use(express.static(path.join(__dirname, '/client/dist')));
+app.use(express.static(path.join(__dirname, '/frontend/dist')));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+  res.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'));
 });
 
 //app.get("/", (req, res) => { res.send("Server is ready..."); }); 
