@@ -489,11 +489,8 @@ b/touch vercel.json
         }]
     }
 
-36/ site vercel
+36/ site render
 
-- connexion
-- +add new > project
-- choisir le dépôt git
-- variable environnement
+
 
 
