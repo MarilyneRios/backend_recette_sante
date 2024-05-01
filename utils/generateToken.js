@@ -9,8 +9,8 @@ const generateToken = (res, userId) => {
   res.cookie('jwt', token, {
     httpOnly: true,
      // Cette option force le cookie à être envoyé uniquement sur des connexions sécurisées
-    secure: process.env.NODE_ENV !== 'development',
-    //secure: process.env.NODE_ENV !== 'production',
+    secure: process.env.NODE_ENV !== 'development',// Utiliser secure cookies en production
+
     sameSite: 'strict', 
     maxAge: 30 * 24 * 60 * 60 * 1000, 
   });
