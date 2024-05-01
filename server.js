@@ -23,12 +23,16 @@ const port = process.env.NODE_ENV === 'production' ? process.env.PORT : 3001;
 
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'https://frontend-recette-sante.vercel.app/'],
+    origin: [
+      'http://localhost:3000',
+      'https://frontend-recette-sante.vercel.app/',
+      'https://frontend-recette-sante-ca0mfak3s-marilynerios-projects.vercel.app'
+    ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    
   }),
 );
+
 
 //gérer les données JSON et URL encodées dans les requêtes entinstallrantes
 app.use(express.json());
