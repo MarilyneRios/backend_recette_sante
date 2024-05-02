@@ -25,8 +25,8 @@ app.use(
   cors({
     origin: [
       'http://localhost:3000',
-      'https://frontend-recette-sante-xq26.vercel.app/',
-      'https://frontend-recette-sante-xq26-ffykkmh0k-marilynerios-projects.vercel.app'
+      'https://frolicking-bunny-994a36.netlify.app/',
+      
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
