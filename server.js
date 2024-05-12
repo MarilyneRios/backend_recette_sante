@@ -25,7 +25,7 @@ app.use(
   cors({
     origin: [
       'http://localhost:3000',
-      'https://frolicking-bunny-994a36.netlify.app/',
+      'https://recette-sante.netlify.app/',
       
     ],
     credentials: true,
