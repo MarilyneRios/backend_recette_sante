@@ -26,13 +26,16 @@ app.use(
     origin: [
       'http://localhost:3000',
       'https://recette-sante.netlify.app/',
-      
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
   }),
 );
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'https://recette-sante.netlify.app/');
+  next();
+});
 
 //gérer les données JSON et URL encodées dans les requêtes entinstallrantes
 app.use(express.json());
