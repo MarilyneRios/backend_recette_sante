@@ -25,15 +25,17 @@ app.use(
   cors({
     origin: [
       'http://localhost:3000',
-      'https://recette-sante.netlify.app/',
+      //'https://recette-sante.netlify.app/',
+      'https://frontend-recette-sante.onrender.com',
     ],
     credentials: true,
+    
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
   }),
 );
 
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'https://recette-sante.netlify.app/');
+  console.log(res.get('Access-Control-Allow-Origin'));
   next();
 });
 
