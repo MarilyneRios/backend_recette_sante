@@ -11,7 +11,8 @@ const generateToken = (res, userId) => {
      // Cette option force le cookie à être envoyé uniquement sur des connexions sécurisées
     secure: process.env.NODE_ENV !== 'development',// Utiliser secure cookies en production
 
-    sameSite: 'strict', 
+    //sameSite: 'strict', //si dans le même dossier
+    sameSite: 'lax',// si dans 2 dossiers
     maxAge: 30 * 24 * 60 * 60 * 1000, 
   });
   return token;
